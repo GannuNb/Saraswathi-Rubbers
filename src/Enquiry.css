@@ -1,0 +1,54 @@
+/* Existing styles */
+textarea:focus,
+input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+form input,
+form textarea {
+  padding: 12px;
+  font-size: 16px;
+}
+
+/* Responsive tweaks for mobile */
+@media (max-width: 768px) {
+  .container-fluid.py-5 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Stack images and form vertically with spacing */
+  .row.justify-content-center.mb-5,
+  .row.justify-content-center {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .col-md-6,
+  .col-md-4 {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 2rem;
+    text-align: center !important;
+  }
+
+  /* Make images smaller but responsive */
+  .img-fluid {
+    max-width: 90%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Form inputs full width */
+  form input,
+  form textarea {
+    font-size: 14px;
+  }
+
+  button.btn {
+    font-size: 16px;
+    padding: 12px 0;
+  }
+}

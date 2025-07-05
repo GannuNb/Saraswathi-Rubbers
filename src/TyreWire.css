@@ -1,0 +1,141 @@
+/* Wrapper for full viewport width top image */
+.top-image-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border-radius: 0 0 12px 12px; /* rounded bottom corners only */
+  margin-bottom: 40px;
+}
+
+.top-image-wrapper img.top-image {
+  width: 100vw;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.top-image-wrapper img.top-image:hover {
+  transform: scale(1.03);
+}
+
+/* Keep rest inside the container */
+.tyrewire-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Flex container: text left, images right */
+.content-wrapper.flex-row {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 0; /* removed extra margin */
+}
+
+/* Text section styling */
+.text-content {
+  flex: 2;
+  min-width: 320px;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.text-content h2 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #0D47A1; /* deep blue */
+  letter-spacing: 1.2px;
+}
+
+.text-content h3 {
+  margin-top: 32px;
+  margin-bottom: 12px;
+  font-size: 1.6rem;
+  color: #D32F2F; /* strong red accent */
+  font-weight: 600;
+}
+
+.text-content p,
+.text-content ul {
+  margin-bottom: 18px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.text-content ul {
+  padding-left: 24px;
+  list-style-type: disc;
+}
+
+.text-content ul li {
+  margin-bottom: 8px;
+}
+
+/* Images column vertical stack */
+.images-column {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.images-column img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  object-fit: cover;
+  height: 180px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.images-column img:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .content-wrapper.flex-row {
+    flex-direction: column;
+  }
+  .images-column {
+    flex-direction: row;
+    overflow-x: auto;
+    min-width: 100%;
+    gap: 16px;
+  }
+  .images-column img {
+    width: auto;
+    height: 140px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-image-wrapper img.top-image {
+    height: 200px;
+  }
+  .text-content h2 {
+    font-size: 2rem;
+  }
+  .text-content h3 {
+    font-size: 1.2rem;
+  }
+  .text-content p,
+  .text-content ul {
+    font-size: 0.9rem;
+  }
+}
