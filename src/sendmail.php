@@ -1,46 +1,85 @@
 <?php
-// Set response type
-header('Content-Type: application/json');
 
-// Configuration
-$to = "support@saraswathirubbers.com";
-$subject = "New Enquiry from Saraswathi Rubbers Website";
+// show errors for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Sanitize and fetch POST data
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
+
+// sanitize input
 $name = htmlspecialchars(trim($_POST['name'] ?? ''));
-$email = htmlspecialchars(trim($_POST['email'] ?? ''));
+$email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
 $formSubject = htmlspecialchars(trim($_POST['subject'] ?? ''));
 $message = htmlspecialchars(trim($_POST['message'] ?? ''));
 
-// Validate essential fields
+// validation
 if (!$name || !$email || !$formSubject) {
-    echo json_encode(["status" => "error", "message" => "Required fields are missing."]);
+    echo json_encode([
+        "status"=>"error",
+        "message"=>"Required fields are missing."
+    ]);
     exit;
 }
 
-// Email content
-$body = "
-You have received a new enquiry from your website:
+try {
+
+    $mail = new PHPMailer(true);
+
+    // SMTP configuration
+    $mail->isSMTP();
+    $mail->Host = "smtp.hostinger.com";
+    $mail->SMTPAuth = true;
+
+    $mail->Username = "support@saraswathirubbers.com";
+    $mail->Password = "Saraswathirubbers@123";
+
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port = 465;
+
+    // sender
+    $mail->setFrom("support@saraswathirubbers.com","Saraswathi Rubbers Website");
+
+    // admin receiver
+    $mail->addAddress("support@saraswathirubbers.com");
+
+    // reply to user
+    $mail->addReplyTo($email,$name);
+
+    $mail->isHTML(false);
+
+    $mail->Subject = "New Enquiry from Saraswathi Rubbers Website";
+
+    $mail->Body =
+"You have received a new enquiry from your website.
 
 Name: $name
 Email: $email
 Subject: $formSubject
-Message: 
+
+Message:
 $message
 ";
 
-// Email headers
-$headers = "From: $name <$email>\r\n";
-$headers .= "Reply-To: $email\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $mail->send();
 
-// Send email
-$sent = mail($to, $subject, $body, $headers);
+    echo json_encode([
+        "status"=>"success",
+        "message"=>"Message sent successfully."
+    ]);
 
-// Response
-if ($sent) {
-    echo json_encode(["status" => "success", "message" => "Message sent successfully."]);
-} else {
-    echo json_encode(["status" => "error", "message" => "Failed to send message."]);
 }
-?>
+catch (Exception $e){
+
+    echo json_encode([
+        "status"=>"error",
+        "message"=>$mail->ErrorInfo
+    ]);
+}
